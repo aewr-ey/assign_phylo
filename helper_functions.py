@@ -81,8 +81,6 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
     while nodes > 2:
 
         leaf_sums = np.sum(distances, axis=0)
-        # print(leaf_sums)
-        
 
         q_matrix = np.empty((nodes,nodes))
 
@@ -110,24 +108,24 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
             new_d = (distances[row,n] + distances[col,n] - distances[row,col])/2
             update_distance.append(new_d)
 
-
+        # add combined node distances to new distances 
         horizontal_removed = np.delete(distances, [row, col], axis=0)
         remaining = np.delete(horizontal_removed, [row, col], axis=1)
 
         remaining = np.column_stack((remaining, update_distance))
         remaining = np.vstack((remaining, np.append(update_distance, 0)))
 
-        # print(remaining)
         distances = remaining
         labels.pop(max(row,col))
         labels.pop(min(row,col))
         labels.append(new_label)
-    
 
-        
-        # print(remaining)
+        leaf_nodes.pop(max(row,col))
+        leaf_nodes.pop(min(row,col))
+        leaf_nodes.append(joint_node)
+        print(labels)
+        print([node.name for node in leaf_nodes])
 
-        # print ("DONE")
         nodes = len(labels)
 
     root = Node(
