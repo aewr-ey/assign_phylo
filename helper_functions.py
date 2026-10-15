@@ -70,8 +70,6 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
         A root node of the neighbor joining tree.
 
     """
-    print(distances)
-    # print(labels)
 
     leaf_nodes = []
 
@@ -92,10 +90,7 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
             for j in range(nodes):
                 if i != j:
                     q_matrix[i,j] = (nodes - 2)*distances[i,j]-leaf_sums[i]-leaf_sums[j]
-
-        # print(q_matrix)
         row, col = np.unravel_index(np.argmin(q_matrix), q_matrix.shape)
-        # print(row, col)
 
         new_label = f"{labels[row]}{labels[col]}"
         left_branch_dist = (distances[row,col]/2) + ((leaf_sums[row]-leaf_sums[col])/(2*(nodes-2)))
@@ -104,14 +99,11 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
 
 
         joint_node = Node(new_label, leaf_nodes[row], left_branch_dist, leaf_nodes[col], right_branch_dist)
-        print(new_label, left_branch_dist, right_branch_dist)
 
         remaining_nodes = []
         for r in range(nodes):
             if r!=row and r!=col: 
                 remaining_nodes.append(r)
-
-        print(remaining_nodes)
 
         update_distance = []
         for n in remaining_nodes:
@@ -121,17 +113,31 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
 
         horizontal_removed = np.delete(distances, [row, col], axis=0)
         remaining = np.delete(horizontal_removed, [row, col], axis=1)
+
         remaining = np.column_stack((remaining, update_distance))
         remaining = np.vstack((remaining, np.append(update_distance, 0)))
 
-        labels = np.delete(labels, [row, col])
-        labels = np.append(labels, new_label)
+        # print(remaining)
+        distances = remaining
+        labels.pop(max(row,col))
+        labels.pop(min(row,col))
+        labels.append(new_label)
+    
 
         
-        print(remaining)
+        # print(remaining)
 
-        print ("DONE")
+        # print ("DONE")
         nodes = len(labels)
+
+    root = Node(
+    "root",
+    leaf_nodes[0], distances[0, 1] / 2,
+    leaf_nodes[1], distances[0, 1] / 2
+)   
+    # print (label[0])
+
+    return root
     # print(update_distance)
     
     
