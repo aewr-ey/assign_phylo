@@ -81,23 +81,22 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
     while nodes > 2:
 
         leaf_sums = np.sum(distances, axis=0)
-
         q_matrix = np.empty((nodes,nodes))
 
+        # calculate q-value matrix
         for i in range(nodes):
             for j in range(nodes):
                 if i != j:
                     q_matrix[i,j] = (nodes - 2)*distances[i,j]-leaf_sums[i]-leaf_sums[j]
         row, col = np.unravel_index(np.argmin(q_matrix), q_matrix.shape)
 
+        # calculate new distances and labels for the joint node
         new_label = f"{labels[row]}{labels[col]}"
         left_branch_dist = (distances[row,col]/2) + ((leaf_sums[row]-leaf_sums[col])/(2*(nodes-2)))
         right_branch_dist = (distances[row,col]) - left_branch_dist
-
-
-
         joint_node = Node(new_label, leaf_nodes[row], left_branch_dist, leaf_nodes[col], right_branch_dist)
 
+        # remove the nodes that were combined and update distance array 
         remaining_nodes = []
         for r in range(nodes):
             if r!=row and r!=col: 
@@ -127,11 +126,12 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
 
         nodes = len(labels)
 
+    # get root node - combining last two nodes left
     root = Node(f"{labels[0]}{labels[1]}", 
     leaf_nodes[0], distances[0, 1] / 2,
     leaf_nodes[1], distances[0, 1] / 2
     )   
-    
+
     return root
 
 
