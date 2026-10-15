@@ -70,13 +70,23 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
         A root node of the neighbor joining tree.
 
     """
-    print(distances)
-    print(labels)
+    # print(distances)
+    # print(labels)
 
     leaf_sums = np.sum(distances, axis=0)
-    print(leaf_sums)
+    # print(leaf_sums)
+    nodes = len(labels)
 
-    print("DONE")
+    q_matrix = np.empty((nodes,nodes))
+
+    for i in range(nodes):
+        for j in range(nodes):
+            if i != j:
+                q_matrix[i,j] = (nodes - 2)*distances[i,j]-leaf_sums[i]-leaf_sums[j]
+
+    print(q_matrix)
+                
+    # print("DONE")
     
     
     # self.tree = Node()
