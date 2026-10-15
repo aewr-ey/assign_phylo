@@ -70,10 +70,18 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
         A root node of the neighbor joining tree.
 
     """
-    
-    self.tree = Node()
+    print(distances)
+    print(labels)
 
-    raise NotImplementedError()
+    leaf_sums = np.sum(distances, axis=0)
+    print(leaf_sums)
+
+    print("DONE")
+    
+    
+    # self.tree = Node()
+
+    # raise NotImplementedError()
 
 
 def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
