@@ -70,23 +70,70 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
         A root node of the neighbor joining tree.
 
     """
-    # print(distances)
+    print(distances)
     # print(labels)
 
-    leaf_sums = np.sum(distances, axis=0)
-    # print(leaf_sums)
+    leaf_nodes = []
+
+    for label in labels:
+        leaf_nodes.append(Node(label, None, 0, None, 0))
+        
     nodes = len(labels)
 
-    q_matrix = np.empty((nodes,nodes))
+    while nodes > 2:
 
-    for i in range(nodes):
-        for j in range(nodes):
-            if i != j:
-                q_matrix[i,j] = (nodes - 2)*distances[i,j]-leaf_sums[i]-leaf_sums[j]
+        leaf_sums = np.sum(distances, axis=0)
+        # print(leaf_sums)
+        
 
-    print(q_matrix)
-                
-    # print("DONE")
+        q_matrix = np.empty((nodes,nodes))
+
+        for i in range(nodes):
+            for j in range(nodes):
+                if i != j:
+                    q_matrix[i,j] = (nodes - 2)*distances[i,j]-leaf_sums[i]-leaf_sums[j]
+
+        # print(q_matrix)
+        row, col = np.unravel_index(np.argmin(q_matrix), q_matrix.shape)
+        # print(row, col)
+
+        new_label = f"{labels[row]}{labels[col]}"
+        left_branch_dist = (distances[row,col]/2) + ((leaf_sums[row]-leaf_sums[col])/(2*(nodes-2)))
+        right_branch_dist = (distances[row,col]) - left_branch_dist
+
+
+
+        joint_node = Node(new_label, leaf_nodes[row], left_branch_dist, leaf_nodes[col], right_branch_dist)
+        print(new_label, left_branch_dist, right_branch_dist)
+
+        remaining_nodes = []
+        for r in range(nodes):
+            if r!=row and r!=col: 
+                remaining_nodes.append(r)
+
+        print(remaining_nodes)
+
+        update_distance = []
+        for n in remaining_nodes:
+            new_d = (distances[row,n] + distances[col,n] - distances[row,col])/2
+            update_distance.append(new_d)
+
+
+        horizontal_removed = np.delete(distances, [row, col], axis=0)
+        remaining = np.delete(horizontal_removed, [row, col], axis=1)
+        remaining = np.column_stack((remaining, update_distance))
+        remaining = np.vstack((remaining, np.append(update_distance, 0)))
+
+        labels = np.delete(labels, [row, col])
+        labels = np.append(labels, new_label)
+
+        
+        print(remaining)
+
+        print ("DONE")
+        nodes = len(labels)
+    # print(update_distance)
+    
     
     
     # self.tree = Node()
