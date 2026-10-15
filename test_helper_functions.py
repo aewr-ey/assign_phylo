@@ -110,27 +110,6 @@ class TestNeighborJoining(unittest.TestCase):
             ),
             right_distance=0.5,
         )
-
-        print(expected.name)
-        print(expected.left.name, expected.left_distance)
-        print(expected.right.name, expected.right_distance)
-        print(expected.left.left.name, expected.left.left_distance)
-        print(expected.right.right.name, expected.right.right_distance)
-
-        print("Root:", result.name)
-        print("Root left:", result.left.name)
-        print("Root right:", result.right.name)
-
-        print("X left:", result.left.left)
-        print("X right:", result.left.right)
-
-        print("Y left:", result.right.left)
-        print("Y right:", result.right.right)
-
-
-       
-   
-
         self.assertTrue(is_isomorhipic(result, expected))
 
 

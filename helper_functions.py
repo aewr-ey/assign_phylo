@@ -115,6 +115,7 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
         remaining = np.column_stack((remaining, update_distance))
         remaining = np.vstack((remaining, np.append(update_distance, 0)))
 
+        # update labels, distances and leaf_node - to include joint nodes and remove the combined
         distances = remaining
         labels.pop(max(row,col))
         labels.pop(min(row,col))
@@ -123,26 +124,15 @@ def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
         leaf_nodes.pop(max(row,col))
         leaf_nodes.pop(min(row,col))
         leaf_nodes.append(joint_node)
-        print(labels)
-        print([node.name for node in leaf_nodes])
 
         nodes = len(labels)
 
-    root = Node(
-    "root",
+    root = Node(f"{labels[0]}{labels[1]}", 
     leaf_nodes[0], distances[0, 1] / 2,
     leaf_nodes[1], distances[0, 1] / 2
-)   
-    # print (label[0])
-
+    )   
+    
     return root
-    # print(update_distance)
-    
-    
-    
-    # self.tree = Node()
-
-    # raise NotImplementedError()
 
 
 def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
