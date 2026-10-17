@@ -172,6 +172,32 @@ def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
     ax.plot([x, right_x], [right_y, right_y])
     print("hi")
 
+
+    def draw(node, x,y):
+        if node.left == None and node.right == None:
+            ax.text(node.name)
+            return ax
+            
+        left_horiz = x + tree.left_distance   
+        right_horiz = x + tree.right_distance 
+
+        left_vertical = draw(node, left_horiz, y)
+
+        right_vertical = draw(node, right_horiz, y)
+
+
+        ax.plot([x, left_horiz], [left_vertical, left_vertical])
+        ax.plot([x, right_horiz], [right_vertical, right_vertical])
+
+        parent_vertical = (left_vertical + right_vertical)/2
+        return parent_vertical
+
+    draw(tree, 0,0)
+
+
+
+
+
     return ax
 
 
