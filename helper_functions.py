@@ -160,23 +160,10 @@ def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
 
     """
 
-    x = 0
-    left_x = x + tree.left_distance   
-    right_x = x + tree.right_distance 
-    print(left_x, right_x)
-
-    left_y = 0
-    right_y = 1
-
-    # ax.plot([x, left_x], [left_y, left_y])
-    # ax.plot([x, right_x], [right_y, right_y])
-    # print("hi")
-
-
     def draw(node, x,y):
         if node.left == None and node.right == None:
 
-            ax.text(x, y, node.name)
+            ax.text(x+0.1, y, node.name, va="center")
             return y, y + 1
             
         left_horiz = x + node.left_distance   
@@ -187,9 +174,9 @@ def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
         right_vertical, y = draw(node.right, right_horiz, y)
 
 
-        ax.plot([x, left_horiz], [left_vertical, left_vertical])
-        ax.plot([x, right_horiz], [right_vertical, right_vertical])
-        ax.plot([x, x], [left_vertical, right_vertical])  
+        ax.plot([x, left_horiz], [left_vertical, left_vertical], color="black")
+        ax.plot([x, right_horiz], [right_vertical, right_vertical], color="black")
+        ax.plot([x, x], [left_vertical, right_vertical], color="black")  
 
         parent_vertical = (left_vertical + right_vertical)/2
         return parent_vertical, y
@@ -197,7 +184,7 @@ def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
 
     root_line, y = draw(tree, 0,0)
    
-    ax.plot([-0.2, 0], [root_line, root_line])
+    ax.plot([-0.2, 0], [root_line, root_line], color="black")
 
 
 
