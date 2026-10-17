@@ -156,24 +156,23 @@ def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
     >>> fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(8, 8))
     >>> plot_nj_tree(tree=tree, ax=ax)
     >>> fig.savefig("example.png")
-
-
     """
 
     def draw(node, x,y):
+        # stop when its a leaf
         if node.left == None and node.right == None:
-
             ax.text(x+0.1, y, node.name, va="center")
             return y, y + 1
-            
+
+        # calculate distance between node and its children
         left_horiz = x + node.left_distance   
         right_horiz = x + node.right_distance 
 
+        # go through all children on the right + left
         left_vertical, y = draw(node.left, left_horiz, y)
-
         right_vertical, y = draw(node.right, right_horiz, y)
 
-
+        # plot children + vertical line connecting them to parent node
         ax.plot([x, left_horiz], [left_vertical, left_vertical], color="black")
         ax.plot([x, right_horiz], [right_vertical, right_vertical], color="black")
         ax.plot([x, x], [left_vertical, right_vertical], color="black")  
@@ -181,14 +180,9 @@ def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
         parent_vertical = (left_vertical + right_vertical)/2
         return parent_vertical, y
 
-
+    # draw line for the root
     root_line, y = draw(tree, 0,0)
-   
     ax.plot([-0.2, 0], [root_line, root_line], color="black")
-
-
-
-
 
     return ax
 
