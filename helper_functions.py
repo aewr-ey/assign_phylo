@@ -46,6 +46,7 @@ class Node:
         self.right = right
         self.right_distance = right_distance
         self.confidence = confidence
+        self.group = None
 
 
 def neighbor_joining(distances: np.ndarray, labels: list) -> Node:
@@ -161,7 +162,8 @@ def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
     def draw(node, x,y):
         # stop when its a leaf
         if node.left == None and node.right == None:
-            ax.text(x+0.1, y, node.name, va="center")
+            color = virus_colours.get(node.group)
+            ax.text(x+0.1, y, node.name, va="center", color=color)
             return y, y + 1
 
         # calculate distance between node and its children
@@ -324,3 +326,10 @@ def plot_nj_tree_radial(tree: Node, ax: Axes = None, **kwargs) -> None:
 
     """
     raise NotImplementedError()
+
+virus_colours = {
+    "Alphacoronavirus": "pink",
+    "Betacoronavirus": "blue",
+    "Gammacoronavirus": "green",
+    "Deltacoronavirus": "orange",
+}
