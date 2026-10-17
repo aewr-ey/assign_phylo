@@ -175,15 +175,15 @@ def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
 
     def draw(node, x,y):
         if node.left == None and node.right == None:
-            ax.text(node.name)
-            return ax
+            ax.text(x, y, node.name)
+            return y
             
-        left_horiz = x + tree.left_distance   
-        right_horiz = x + tree.right_distance 
+        left_horiz = x + node.left_distance   
+        right_horiz = x + node.right_distance 
 
-        left_vertical = draw(node, left_horiz, y)
+        left_vertical = draw(node.left, left_horiz, y)
 
-        right_vertical = draw(node, right_horiz, y)
+        right_vertical = draw(node.right, right_horiz, y)
 
 
         ax.plot([x, left_horiz], [left_vertical, left_vertical])
