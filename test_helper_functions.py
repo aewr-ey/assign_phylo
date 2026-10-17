@@ -302,5 +302,6 @@ class TestPlottingDendrogram(unittest.TestCase):
         f.savefig("tests/test_plotting_dendrogram.png", dpi=400, bbox_inches="tight")
 
 
+
 if __name__ == "__main__":
     unittest.main()

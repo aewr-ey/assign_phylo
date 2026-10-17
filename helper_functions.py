@@ -157,7 +157,20 @@ def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
     >>> plot_nj_tree(tree=tree, ax=ax)
     >>> fig.savefig("example.png")
 
+
     """
+
+    x = 0
+    left_x = x + tree.left_distance   
+    right_x = x + tree.right_distance 
+    print(left_x, right_x)
+
+    left_y = 0
+    right_y = 1
+
+    ax.plot([x, left_x], [left_y, left_y])
+    ax.plot([x, right_x], [right_y, right_y])
+    print("hi")
 
     return ax
 
