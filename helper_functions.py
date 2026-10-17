@@ -194,7 +194,10 @@ def plot_nj_tree(tree: Node, ax: Axes = None, **kwargs) -> None:
         parent_vertical = (left_vertical + right_vertical)/2
         return parent_vertical, y
 
-    draw(tree, 0,0)
+
+    root_line, y = draw(tree, 0,0)
+   
+    ax.plot([-0.2, 0], [root_line, root_line])
 
 
 
